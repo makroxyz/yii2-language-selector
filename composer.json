@@ -14,6 +14,6 @@
         "yiisoft/yii2": "*"
     },
     "autoload": {
-        "psr-4": {"makroxyz\\langsel\\": ""}
+        "psr-4": {"makroxyz\\language\\": ""}
     }
 }
