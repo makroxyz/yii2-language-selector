@@ -36,3 +36,9 @@ return [
     ...
 ];
 ```
+
+then you can call 
+```php
+Yii::$app->lang->getMenuItems()
+```
+to obtain language dropdown items for use in your yii\widgets\Menu or yii\bootstrap\Nav
