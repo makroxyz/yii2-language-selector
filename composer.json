@@ -1,0 +1,19 @@
+{
+    "name": "makroxyz/yii2-language-selector",
+    "description": "Yii Framework 2.0 Component for language selection",
+    "keywords": ["yii2", "language", "selector"],
+    "type": "yii2-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marco Curatitoli",
+            "email": "makro76@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {"makroxyz\\langsel\\": ""}
+    }
+}
