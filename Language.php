@@ -22,7 +22,12 @@ class Language extends Component
      * desc - language description
      */
     public $menuTemplate = '{desc}';
+    /**
+     * @var string query param name 
+     */
+    public $queryParam = 'lang';
     
+    private $_key;
     
     /**
      * @inheritdoc
@@ -32,31 +37,32 @@ class Language extends Component
         parent::init();
         
         if (!isset(Yii::$app->params['languages'])) {
-            throw new \yii\base\InvalidConfigException("You must define Yii::$app->params['languages'] array");
+            throw new \yii\base\InvalidConfigException("You must define Yii::\$app->params['languages'] array");
         }
         
-        $request =Yii::$app->getRequest();
-        $lang = $request->get('lang');
+        $request = Yii::$app->getRequest();
+        $lang = $request->get($this->queryParam);
+        $this->_key = 'language.' . $this->queryParam;
         if ($lang !== null) {
-            Yii::$app->session->set('lang', $lang);
+            Yii::$app->session->set($this->_key, $lang);
             Yii::$app->language = $lang;
-        } elseif (Yii::$app->session->get('lang') === null) {
+        } elseif (Yii::$app->session->get($this->_key) === null) {
             $preferredLang = $request->getPreferredLanguage(array_keys(Yii::$app->params['languages']));
             if ($preferredLang !== null) {
-                Yii::$app->session->set('lang', $preferredLang);
+                Yii::$app->session->set($this->_key, $preferredLang);
                 Yii::$app->language = $preferredLang;
             } else {
-                 Yii::$app->session->set('lang', Yii::$app->language);
+                 Yii::$app->session->set($this->_key, Yii::$app->language);
             }
         } else {
-            Yii::$app->language = Yii::$app->session->get('lang');
+            Yii::$app->language = Yii::$app->session->get($this->_key);
         }
     }
     
     public function url($lang) 
     {
         $resolve = Yii::$app->request->resolve();
-        $route = $resolve[0];
+        $route = "/" . $resolve[0];
         $params = $resolve[1];
         
         $params['lang'] = $lang;
@@ -67,7 +73,7 @@ class Language extends Component
     {
         $subItems = [];
         foreach (Yii::$app->params['languages'] as $lang => $desc) {
-            if (Yii::$app->session->get('lang') == $lang) {
+            if (Yii::$app->session->get($this->_key) == $lang) {
                 $item = ['label' => strtr($this->menuTemplate, [
                     '{lang}' => $lang,
                     '{desc}' => $desc,
